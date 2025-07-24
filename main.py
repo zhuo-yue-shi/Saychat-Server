@@ -127,7 +127,8 @@ def register():
         'Password': hash_password(password),
         'Login_usersname': hash_password(login_usersname),
         'En_usersname': english_username,
-        'created_at': datetime.datetime.utcnow().isoformat()
+        'created_at': datetime.datetime.utcnow().isoformat(),
+        'email': email
     }
     register_users.append({
         'Usersname': username,
@@ -135,7 +136,8 @@ def register():
         'Password': hash_password(password),
         'Login_usersname': hash_password(login_usersname),
         'En_usersname': english_username,
-        'created_at': datetime.datetime.utcnow().isoformat()
+        'created_at': datetime.datetime.utcnow().isoformat(),
+        'email': email
     })
     save_user_data()
     logging.info(f"User registered successfully: {username}")
