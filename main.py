@@ -35,6 +35,8 @@ DATA_FILE = 'UsersData.json'
 users = {}
 # 存储已撤销的令牌
 revoked_tokens = set()
+# 新注册的用户
+register_users = []
 
 # 加载用户数据
 if os.path.exists(DATA_FILE):
@@ -62,14 +64,17 @@ if os.path.exists(DATA_FILE):
 
 # 保存用户数据
 def save_user_data():
+    # 本函数弃用
+    pass
+
     # Convert users dictionary back to array format for saving
-    users_array = list(users.values())
+    # users_array = list(users.values())
     # Remove added fields not in original format
-    for user in users_array:
-        user.pop('id', None)
-        user.pop('created_at', None)
-    with open(DATA_FILE, 'w', encoding='utf-8') as f:
-        json.dump(users_array, f, ensure_ascii=False, indent=2)
+    # for user in users_array:
+    #     user.pop('id', None)
+    #     user.pop('created_at', None)
+    # with open(DATA_FILE, 'w', encoding='utf-8') as f:
+    #     json.dump(users_array, f, ensure_ascii=False, indent=2)
 
 # 密码哈希函数
 def hash_password(password):
@@ -116,6 +121,13 @@ def register():
         'Login_usersname': hash_password(login_usersname),
         'En_usersname': english_username
     }
+    register_users.append({
+        'Usersname': username,
+        'Type': str(user_type),
+        'Password': hash_password(password),
+        'Login_usersname': hash_password(login_usersname),
+        'En_usersname': english_username
+    })
     save_user_data()
     logging.info(f"User registered successfully: {username}")
 
@@ -216,6 +228,21 @@ def verify_token():
         'status': 'success',
         'message': 'Token is valid',
         'exp': get_jwt()['exp']
+    }), 200
+
+@app.route('/user/checkRegisterUsers', methods=['GET'])
+@jwt_required()
+def check_register_users():
+    current_user = get_jwt_identity()
+    user = users.get(hash_password(current_user))
+    if not user:
+        return jsonify({'status': 'error', 'message': 'User not found'}), 404
+    if not (user['Type'] == '1' or user['Type'] == '5'):
+        return jsonify({'status': 'error', 'message': 'You are not an admin'}), 403
+
+    return jsonify({
+        'status': 'success',
+        'data': register_users
     }), 200
 
 if __name__ == '__main__':
