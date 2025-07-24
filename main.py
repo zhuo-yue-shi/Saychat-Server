@@ -126,14 +126,16 @@ def register():
         'Type': str(user_type),
         'Password': hash_password(password),
         'Login_usersname': hash_password(login_usersname),
-        'En_usersname': english_username
+        'En_usersname': english_username,
+        'created_at': datetime.datetime.utcnow().isoformat()
     }
     register_users.append({
         'Usersname': username,
         'Type': str(user_type),
         'Password': hash_password(password),
         'Login_usersname': hash_password(login_usersname),
-        'En_usersname': english_username
+        'En_usersname': english_username,
+        'created_at': datetime.datetime.utcnow().isoformat()
     })
     save_user_data()
     logging.info(f"User registered successfully: {username}")
@@ -194,7 +196,8 @@ def get_user_info():
             'Type': user['Type'],
             'Password': user['Password'],
             'Login_usersname': user['Login_usersname'],
-            'En_usersname': user['En_usersname']
+            'En_usersname': user['En_usersname'],
+            'created_at': user['created_at']
         }
     }
     return jsonify(ret), 200
@@ -211,7 +214,7 @@ def update_user_info():
     logging.info(f"Update attempt for user: {current_user}")
     
     # 禁止修改特定字段
-    disallowed_fields = ['Usersname', 'Unblock time', 'Type', 'Login_usersname', 'En_usersname', 'Banned']
+    disallowed_fields = ['Usersname', 'Unblock time', 'Type', 'Login_usersname', 'En_usersname', 'Banned', 'created_at']
     for field in disallowed_fields:
         if field in data:
             return jsonify({'status': 'error', 'message': f'{field}字段不允许通过API修改'}), 400
