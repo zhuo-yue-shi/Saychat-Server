@@ -38,6 +38,13 @@ revoked_tokens = set()
 # 新注册的用户
 register_users = []
 
+# b
+# y
+# N
+# Y
+# Z
+# Y
+
 # 加载用户数据
 if os.path.exists(DATA_FILE):
     try:

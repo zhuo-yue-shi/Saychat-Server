@@ -29,9 +29,8 @@
     "username": "用户名",
     "password": "密码",
     "email": "邮箱地址",
-    "type": 1-6之间的整数,
-    "english_username": "英文用户名(可选)",
-
+    "login_username": "登录用户名",
+    "english_username": "英文用户名"
   }
   ```
 - **响应**: 
@@ -39,8 +38,7 @@
   {
     "status": "success",
     "message": "User registered successfully",
-    "user_id": "用户ID"
-  }
+
   ```
 
 ### 用户登录
@@ -102,14 +100,10 @@
   {
     "status": "success",
     "data": {
-      "id": "用户ID",
-      "username": "用户名",
-      "email": "邮箱地址",
-      "type": 用户类型,
-      "english_username": "英文用户名",
-      "is_banned": 是否被封禁,
-      "unban_time": 解封时间,
-      "created_at": "创建时间"
+      "Usersname": "用户名",
+      "Type": "用户类型",
+      "Login_usersname": "登录用户名",
+      "En_usersname": "英文用户名"
     }
   }
   ```
@@ -133,3 +127,32 @@
     "message": "User information updated successfully"
   }
   ```
+
+### 查看新注册用户 (管理员专用)
+- **URL**: `/user/checkRegisterUsers`
+- **方法**: GET
+- **描述**: 获取新注册用户列表，仅管理员可访问
+- **请求头**: 需要包含访问令牌
+- **响应**: 
+  ```json
+  {
+    "status": "success",
+    "data": [
+      {
+        "Usersname": "用户名",
+        "Type": "用户类型",
+        "Password": "密码哈希",
+        "Login_usersname": "登录用户名哈希",
+        "En_usersname": "英文用户名"
+      }
+    ]
+  }
+  ```
+- **错误响应**: 
+  ```json
+  {
+    "status": "error",
+    "message": "用户不存在" | "您不是管理员"
+  }
+  ```
+- **状态码**: 200, 401, 403, 404

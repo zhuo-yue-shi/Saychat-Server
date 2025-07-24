@@ -24,11 +24,11 @@ Most endpoints require: `Authorization: Bearer <access_token>`
 - **Auth**: Not required
 - **Request Body**:
   ```json
-  {"username": "string", "password": "string", "email": "string", "type": 1, "english_username": "string"}
+  {"username": "string", "password": "string", "email": "string", "login_username": "string", "english_username": "string"}
   ```
 - **Success Response**:
   ```json
-  {"status": "success", "message": "User registered successfully", "user_id": "uuid"}
+  {"status": "success", "message": "User registered successfully", }
   ```
 - **Error Response**:
   ```json
@@ -71,7 +71,7 @@ Most endpoints require: `Authorization: Bearer <access_token>`
 - **Auth**: Required
 - **Success Response**:
   ```json
-  {"status": "success", "data": {"id": "uuid", "username": "string", "email": "string", "type": 1, "english_username": "string", "is_banned": false, "unban_time": null, "created_at": "string"}}
+  {"status": "success", "data": {"Usersname": "string", "Type": "string", "Login_usersname": "string", "En_usersname": "string"}}
   ```
 - **Error Response**:
   ```json
@@ -102,3 +102,18 @@ Most endpoints require: `Authorization: Bearer <access_token>`
   {"status": "success", "message": "Token is valid", "exp": "number"}
   ```
 - **Status Codes**: 200, 401
+
+### 8. Check Register Users (Admin Only)
+- **Path**: `/user/checkRegisterUsers`
+- **Method**: GET
+- **Auth**: Required (Admin only)
+- **Description**: Get list of newly registered users (Admin only)
+- **Success Response**:
+  ```json
+  {"status": "success", "data": [{"Usersname": "string", "Type": "string", "Password": "string", "Login_usersname": "string", "En_usersname": "string"}]}
+  ```
+- **Error Response**:
+  ```json
+  {"status": "error", "message": "User not found" | "You are not an admin"}
+  ```
+- **Status Codes**: 200, 401, 403, 404
